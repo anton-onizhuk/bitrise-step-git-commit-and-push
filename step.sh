@@ -35,7 +35,7 @@ fi
 
 
 git add ${add_flags} -- ${stage_files}
-git commit --dry-run ${commit_flags} --author "${author}" --message "${commit_message}"
+git commit ${commit_flags} --author "${author}" --message "${commit_message}"
 
 if [ -n "${tag}" ]; then
     tags_flag="--tags"
@@ -45,4 +45,4 @@ if [ -n "${tag}" ]; then
     echo " (?) $(git tag)"
 fi
 
-# git push ${push_flags} "${tags_flag}" "${repository_url}" "${refspec}"
+git push --dry-run ${push_flags} "${tags_flag}" "${repository_url}" "${refspec}"
