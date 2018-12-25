@@ -40,7 +40,7 @@ git commit ${commit_flags} --author "${author}" --message "${commit_message}"
 if [ -n "${tag}" ]; then
     tags_flag="--tags"
     echo " (?) Adding tag ${tag} with message ${tag_message}"
-    git tag --dry-run -fa ${tag} -m "${tag_message}"
+    git tag -fa ${tag} -m "${tag_message}"
     echo " (?) Success, new tags are:"
     echo " (?) $(git tag)"
 fi
