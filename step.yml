@@ -55,11 +55,9 @@ deps:
   apt_get:
   - name: git
 
-
 toolkit:
   bash:
     entry_file: step.sh
-
 
 inputs:
   - stage_files: "$BITRISE_SOURCE_DIR"
@@ -71,7 +69,6 @@ inputs:
         `$BITRISE_SOURCE_DIR` or `.` are commonly used to commit all changes in the project. 
       is_expand: true
       is_required: true
-
   - repository_url: "$GIT_REPOSITORY_URL"
     opts:
       title: Remote repository URL
@@ -80,7 +77,6 @@ inputs:
         Remote repository URL
       is_expand: true
       is_required: true
-
   - author: A U Thor <author@example.com>
     opts:
       title: Commit author
@@ -89,7 +85,6 @@ inputs:
         Author's name and email recorded in commit metadata. Should have standart format as `A U Thor <author@example.com>`.
       is_expand: true
       is_required: true
-
   - commit_message: no message
     opts:
       title: Commit message
@@ -98,21 +93,18 @@ inputs:
         Commit message
       is_expand: true
       is_required: true
-
-  # tags
   - tag:
     opts:
-      category: tag
+      category: Tag
       title: "Tag"
       summary: Tag to add before push
       description: |
         Tag to add before push. Leave empty to add no tag.
       is_expand: true
       is_required: false
-
   - tag_message:
     opts:
-      category: tag
+      category: Tag
       title: "Tag message"
       summary: The message associated to the tag in case you want an annoted tag 
       description: |
@@ -120,12 +112,10 @@ inputs:
         Ignored if `tag` is not specified
       is_expand: true
       is_required: false
-
-  # additional flags
-  - add_flags: --verbose
+  - add_flags: "--verbose"
     opts:
-      category: additional flags
-      title: `add` command flags
+      category: Debug
+      title: add command flags
       summary: Additional flags to use with `add` command
       description: |
         Additional flags to use with `add` command. `add` command composed as following:
@@ -134,11 +124,10 @@ inputs:
         `git add --verbose -- ${stage_files}`
       is_expand: true
       is_required: false
-
   - commit_flags: --verbose
     opts:
-      category: additional flags
-      title: `commit` command flags
+      category: Debug
+      title: commit command flags
       summary: Additional flags to use with `commit` command
       description: |
         Additional flags to use with `commit` command. `commit` command composed as following:
@@ -147,11 +136,10 @@ inputs:
         `git add --verbose -- ${stage_files}`
       is_expand: true
       is_required: false
-
   - push_flags: --verbose
     opts:
-      category: additional flags
-      title: `push` command flags
+      title: push command flags
+      category: Debug
       summary: Additional flags to use with `push` command
       description: |
         Additional flags to use with `push` command. `push` command composed as following:
@@ -160,11 +148,10 @@ inputs:
         `git push --verbose "${tags_flag}" "${repository}" "${refspec}"`
       is_expand: true
       is_required: false
-
   - refspec: ""
     opts:
-      category: additional flags
-      title: `push` command refspec
+      category: Debug
+      title: push command refspec
       summary: Refspec used in `push` command
       description: |
         Refspec used in `push` command. `push` command composed as following:
@@ -173,14 +160,3 @@ inputs:
         `git push ${push_flags} "${tags_flag}" "${repository}"`
       is_expand: true
       is_required: false
-
-
-# outputs:
-#   - EXAMPLE_STEP_OUTPUT:
-#     opts:
-#       title: "Example Step Output"
-#       summary: Summary. No more than 2-3 sentences.
-#       description: |
-#         Description of this output.
-
-#         Can be Markdown formatted text.
