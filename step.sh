@@ -35,7 +35,7 @@ fi
 
 
 git add ${add_flags} -- ${stage_files}
-git commit --dry-run ${commit_flags} --author "${author}" --mesage "${commit_message}"
+git commit --dry-run ${commit_flags} --author "${author}" --message "${commit_message}"
 
 if [ -n "${tag}" ]; then
     tags_flag="--tags"
