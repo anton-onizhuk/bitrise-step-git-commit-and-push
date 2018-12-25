@@ -1,22 +1,48 @@
 #!/bin/bash
 set -ex
 
-echo "This is the value specified for the input 'example_step_input': ${example_step_input}"
+echo " (?) stage_files: $stage_files"
+echo " (?) repository_url: $repository_url"
+echo " (?) author: $author"
+echo " (?) commit_message: $commit_message"
+echo " (?) tag: $tag"
+echo " (?) tag_message: $tag_message"
+echo " (?) add_flags: $add_flags"
+echo " (?) commit_flags: $commit_flags"
+echo " (?) push_flags: $push_flags"
+echo " (?) refspec: $refspec"
 
-#
-# --- Export Environment Variables for other Steps:
-# You can export Environment Variables for other Steps with
-#  envman, which is automatically installed by `bitrise setup`.
-# A very simple example:
-envman add --key EXAMPLE_STEP_OUTPUT --value 'the value you want to share'
-# Envman can handle piped inputs, which is useful if the text you want to
-# share is complex and you don't want to deal with proper bash escaping:
-#  cat file_with_complex_input | envman add --KEY EXAMPLE_STEP_OUTPUT
-# You can find more usage examples on envman's GitHub page
-#  at: https://github.com/bitrise-io/envman
+if [ -z "${stage_files}" ]; then
+    echo " [!] stage_files is an empty string."
+    echo " [!] A directory or a file to include in commit are required."
+    exit 1
+fi
+if [ -z "${repository_url}" ]; then
+    echo " [!] repository_url is an empty string."
+    echo " [!] Remote repository URL is required."
+    exit 1
+fi
+if [ -z "${author}" ]; then
+    echo " [!] author is an empty string."
+    echo " [!] Commit author credentials are required."
+    exit 1
+fi
+if [ -z "${commit_message}" ]; then
+    echo " [!] commit_message is an empty string."
+    echo " [!] Commit message is required."
+    exit 1
+fi
 
-#
-# --- Exit codes:
-# The exit code of your Step is very important. If you return
-#  with a 0 exit code `bitrise` will register your Step as "successful".
-# Any non zero exit code will be registered as "failed" by `bitrise`.
+
+git add ${add_flags} -- ${stage_files}
+git commit --dry-run ${commit_flags} --author "${author}" --mesage "${commit_message}"
+
+if [ -n "${tag}" ]; then
+    tags_flag="--tags"
+    echo " (?) Adding tag ${tag} with message ${tag_message}"
+    git tag --dry-run -fa ${tag} -m "${tag_message}"
+    echo " (?) Success, new tags are:"
+    echo " (?) $(git tag)"
+fi
+
+# git push ${push_flags} "${tags_flag}" "${repository_url}" "${refspec}"

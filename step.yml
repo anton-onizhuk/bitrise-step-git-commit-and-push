@@ -10,9 +10,9 @@
 title: |-
   Git commit and push
 summary: |
-  Commit changes made by bitrise and push tthem to remote repository
+  Commit changes made by bitrise and push them to the remote repository
 description: |
-  Commit changes made by bitrise and push them to remote repository
+  Commit changes made by bitrise and push them to the remote repository
 website: https://github.com/anton-onizhuk/bitrise-step-git-commit-and-push
 source_code_url: https://github.com/anton-onizhuk/bitrise-step-git-commit-and-push
 support_url: https://github.com/anton-onizhuk/bitrise-step-git-commit-and-push/issues
@@ -44,7 +44,7 @@ host_os_tags:
 type_tags:
   - utility
 
-is_requires_admin_user: true
+is_requires_admin_user: false
 is_always_run: false
 is_skippable: false
 run_if: ""
@@ -52,10 +52,8 @@ run_if: ""
 deps:
   brew:
   - name: git
-  - name: wget
   apt_get:
   - name: git
-  - name: wget
 
 
 toolkit:
@@ -64,24 +62,125 @@ toolkit:
 
 
 inputs:
-  - example_step_input: Default Value - you can leave this empty if you want to
+  - stage_files: "$BITRISE_SOURCE_DIR"
     opts:
-      title: "Example Step Input"
-      summary: Summary. No more than 2-3 sentences.
+      title: Commit files
+      summary: A directory or a file to include in commit.
       description: |
-        Description of this input.
-
-        Can be Markdown formatted text.
+        A directory or a file to commit. You can provide a list of pathes like you would normally do using `git add` command. 
+        `$BITRISE_SOURCE_DIR` or `.` are commonly used to commit all changes in the project. 
       is_expand: true
       is_required: true
-      value_options: []
 
-outputs:
-  - EXAMPLE_STEP_OUTPUT:
+  - repository_url: "$GIT_REPOSITORY_URL"
     opts:
-      title: "Example Step Output"
-      summary: Summary. No more than 2-3 sentences.
+      title: Remote repository URL
+      summary: ""
       description: |
-        Description of this output.
+        Remote repository URL
+      is_expand: true
+      is_required: true
 
-        Can be Markdown formatted text.
+  - author: A U Thor <author@example.com>
+    opts:
+      title: Commit author
+      summary: Author's name and email recorded in commit metadata.
+      description: |
+        Author's name and email recorded in commit metadata. Should have standart format as `A U Thor <author@example.com>`.
+      is_expand: true
+      is_required: true
+
+  - commit_message: no message
+    opts:
+      title: Commit message
+      summary: Commit message
+      description: |
+        Commit message
+      is_expand: true
+      is_required: true
+
+  # tags
+  - tag:
+    opts:
+      category: tag
+      title: "Tag"
+      summary: Tag to add before push
+      description: |
+        Tag to add before push. Leave empty to add no tag.
+      is_expand: true
+      is_required: false
+
+  - tag_message:
+    opts:
+      category: tag
+      title: "Tag message"
+      summary: The message associated to the tag in case you want an annoted tag 
+      description: |
+        The message associated to the tag in case you want an annoted tag.
+        Ignored if `tag` is not specified
+      is_expand: true
+      is_required: false
+
+  # additional flags
+  - add_flags: --verbose
+    opts:
+      category: additional flags
+      title: `add` command flags
+      summary: Additional flags to use with `add` command
+      description: |
+        Additional flags to use with `add` command. `add` command composed as following:
+        `git add ${add_flags} -- ${stage_files}`
+        With default value command takes following form:
+        `git add --verbose -- ${stage_files}`
+      is_expand: true
+      is_required: false
+
+  - commit_flags: --verbose
+    opts:
+      category: additional flags
+      title: `commit` command flags
+      summary: Additional flags to use with `commit` command
+      description: |
+        Additional flags to use with `commit` command. `commit` command composed as following:
+        `git commit ${commit_flags} --author "${author}" --mesage "${commit_message}"`
+        With default value command takes following form:
+        `git add --verbose -- ${stage_files}`
+      is_expand: true
+      is_required: false
+
+  - push_flags: --verbose
+    opts:
+      category: additional flags
+      title: `push` command flags
+      summary: Additional flags to use with `push` command
+      description: |
+        Additional flags to use with `push` command. `push` command composed as following:
+        `git push ${push_flags} "${tags_flag}" "${repository}" "${refspec}"`
+        With default value command takes following form:
+        `git push --verbose "${tags_flag}" "${repository}" "${refspec}"`
+      is_expand: true
+      is_required: false
+
+  - refspec: ""
+    opts:
+      category: additional flags
+      title: `push` command refspec
+      summary: Refspec used in `push` command
+      description: |
+        Refspec used in `push` command. `push` command composed as following:
+        `git push ${push_flags} "${tags_flag}" "${repository}" "${refspec}"`
+        With default value command takes following form:
+        `git push ${push_flags} "${tags_flag}" "${repository}"`
+      is_expand: true
+      is_required: false
+
+
+# outputs:
+#   - EXAMPLE_STEP_OUTPUT:
+#     opts:
+#       title: "Example Step Output"
+#       summary: Summary. No more than 2-3 sentences.
+#       description: |
+#         Description of this output.
+
+#         Can be Markdown formatted text.
