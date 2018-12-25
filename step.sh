@@ -45,4 +45,4 @@ if [ -n "${tag}" ]; then
     echo " (?) $(git tag)"
 fi
 
-git push --dry-run ${push_flags} "${tags_flag}" "${repository_url}" "${refspec}"
+git push --dry-run ${push_flags} ${tags_flag} "${repository_url}" ${refspec}
