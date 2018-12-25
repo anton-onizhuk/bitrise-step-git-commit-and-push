@@ -132,20 +132,24 @@ inputs:
       description: |
         Additional flags to use with `commit` command. `commit` command composed as following:
         `git commit ${commit_flags} --author "${author}" --mesage "${commit_message}"`
+        
         With default value command takes following form:
-        `git add --verbose -- ${stage_files}`
+        `git commit --verbose --author "${author}" --mesage "${commit_message}"`
       is_expand: true
       is_required: false
-  - push_flags: --verbose
+  - push_flags: --verbose --all
     opts:
       title: push command flags
       category: Debug
       summary: Additional flags to use with `push` command
       description: |
         Additional flags to use with `push` command. `push` command composed as following:
-        `git push ${push_flags} "${tags_flag}" "${repository}" "${refspec}"`
-        With default value command takes following form:
-        `git push --verbose "${tags_flag}" "${repository}" "${refspec}"`
+        `git push ${push_flags} "${repository}" ${refspec}`
+
+        With default values `push` command takes following form:
+        `git push --verbose --all "${repository}"
+
+        Note that flag `--all` cannot be used with other `refspec`
       is_expand: true
       is_required: false
   - refspec: ""
@@ -155,8 +159,11 @@ inputs:
       summary: Refspec used in `push` command
       description: |
         Refspec used in `push` command. `push` command composed as following:
-        `git push ${push_flags} "${tags_flag}" "${repository}" "${refspec}"`
+        `git push ${push_flags} "${repository}" ${refspec}`
+
         With default value command takes following form:
-        `git push ${push_flags} "${tags_flag}" "${repository}"`
+        `git push --verbose --all "${repository}"`
+
+        Note that flag `--all` cannot be used with other `refspec`
       is_expand: true
       is_required: false
