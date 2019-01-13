@@ -39,7 +39,7 @@ git commit ${commit_flags} --author "${author}" --message "${commit_message}"
 
 if [ -n "${tag}" ]; then
     echo " (?) Adding tag ${tag} with message ${tag_message}"
-    if [ -n "$(git ls-remote --tags "${repository_url}" "${tag})" ]; then 
+    if [ -n "$(git ls-remote --tags "${repository_url}" "${tag}")" ]; then 
         echo " (!) Tag already exists. Adding current commit hash as suffix"
         tag="${tag}-$(git rev-parse --short HEAD)"
         echo " (!) New tag: ${tag}"
