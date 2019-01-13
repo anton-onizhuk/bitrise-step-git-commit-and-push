@@ -38,12 +38,16 @@ git add ${add_flags} -- ${stage_files}
 git commit ${commit_flags} --author "${author}" --message "${commit_message}"
 
 if [ -n "${tag}" ]; then
-    tag_flag="--tags"
     echo " (?) Adding tag ${tag} with message ${tag_message}"
+    if [ -n "$(git ls-remote --tags "${repository_url}" "${tag})" ]; then 
+        echo " (!) Tag already exists. Adding current commit hash as suffix"
+        tag="${tag}-$(git rev-parse --short HEAD)"
+        echo " (!) New tag: ${tag}"
+    fi
     git tag -fa "${tag}" -m "${tag_message}"
-    echo " (?) Success, new tags are:"
-    echo " (?) $(git tag)"
+    git push "${repository_url}" "refs/tags/${tag}"
+    echo " (?) Success, remote tags are:"
+    git ls-remote --tags "${repository_url}"
 fi
 
-
-git push ${push_flags} ${tag_flag} "${repository_url}" ${refspec}
+git push ${push_flags} "${repository_url}" ${refspec}

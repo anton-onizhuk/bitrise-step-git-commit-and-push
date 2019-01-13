@@ -145,7 +145,7 @@ inputs:
       summary: Additional flags to use with `push` command
       description: |
         Additional flags to use with `push` command. `push` command composed as following:
-        `git push ${push_flags} ${tag_flag} "${repository}" ${refspec}`
+        `git push ${push_flags} "${repository}" ${refspec}`
 
         With default values `push` command takes following form:
         `git push --verbose "${repository}" $BITRISE_GIT_BRANCH`
@@ -158,7 +158,7 @@ inputs:
       summary: Refspec used in `push` command
       description: |
         Refspec used in `push` command. `push` command composed as following:
-        `git push ${push_flags} ${tag_flag} "${repository}" ${refspec}`
+        `git push ${push_flags} "${repository}" ${refspec}`
 
         With default value command takes following form:
         `git push --verbose "${repository}" $BITRISE_GIT_BRANCH`
